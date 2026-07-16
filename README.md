@@ -1,48 +1,57 @@
-# Roadmap Generator 🚀
+# 🚀 Dashboard Roadmap Generator | Hack Club Stardance
 
-A smart and beginner-friendly web app that generates a **personalized learning roadmap**
-based on a user's **age, interest, level, and biggest challenge**.
+A dynamic, client-side browser dashboard home screen that instantly generates personalized 30-day, 6-month, and 12-month learning roadmaps without requiring a single full-page reload. 
 
-The app creates a clear plan for:
-- 📅 Next 30 Days
-- 📅 Next 6 Months
-- 📅 Next 12 Months
-
-Built with simplicity, clarity, and real student problems in mind.
+Built exclusively for the **"Give Your Website a Pulse"** Stardance mission.
 
 ---
 
-## ✨ Features
+## ✨ Mission Checklist Fulfillment
 
-- Personalized roadmap generation
-- Supports multiple interests:
-  - Tech
-  - Creative
-  - Business
-- Beginner & Intermediate level support
-- Age-aware suggestions (under 18 vs adult)
-- Clean and responsive UI
-- Simple logic-based system (no AI, fully transparent)
+* **[✓] Custom UI/CSS Layout:** Features a fully tailored dashboard grid built from raw CSS classes, completely bypassing cookie-cutter templates.
+* **[✓] Real Interactive Feature:** Features an internal logic-mapping module that customizes learning tracks instantly using age profiling, structural constraints, and personalized learning variables.
+* **[✓] Seamless API Architecture:** Intercepts traditional forms via modern JavaScript fetch architecture, allowing zero-reload dynamic updates right inside the dashboard view.
+* **[✓] No AI Website Builders:** Built 100% from scratch with pure HTML, semantic CSS, clean JavaScript, and modular Python Flask.
 
 ---
 
-## 🛠 Tech Stack
+## 🛠️ Unified System Tech Stack
 
-- **Python**
-- **Flask**
-- **HTML**
-- **CSS**
+* **Frontend Dashboard:** HTML5, CSS Grid/Flexbox, Native Client JavaScript
+* **Backend Processing Module:** Python, Flask Engine, Flask-CORS Middleware
 
 ---
 
+## 📂 Structural Framework
+
+```text
+├── .vscode/               # Workspace configuration files
+├── backend/
+│   └── app.py            # Flask API processing pipeline with CORS integrations
+├── frontend/
+│   ├── index.html        # Persistent dashboard interface shell
+│   ├── script.js         # Fetch request interceptions and dynamic client injection
+│   └── style.css         # Custom layout designs and responsive grid systems
+└── README.md             # Project documentation and mission verification
+```
+
+---
+
+## 🚀 Running Your Environment Locally
+
+### 1. Initialize the Server Pipeline
+Navigate straight into your server workspace directory and run the engine initialization sequences:
+```bash
+cd backend
+python -m pip install flask flask-cors
+python app.py
+```
+
+### 2. View the Live Environment
+Open your local host address inside your browser session:
+```text
+http://127.0.0.1:5000
+```
 ## 📸 Screenshot
 
 > ![alt text](image.png)
-
----
-
-## ▶️ How to Run Locally
-
-1. Clone the repository:
-```bash
-git clone https://github.com/williamjosh-dev/roadmap-generator.git
