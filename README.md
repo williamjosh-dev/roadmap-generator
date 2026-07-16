@@ -43,7 +43,7 @@ Built exclusively for the **"Give Your Website a Pulse"** Stardance mission.
 Navigate straight into your server workspace directory and run the engine initialization sequences:
 ```bash
 cd backend
-python -m pip install flask flask-cors
+python -m pip requirements.txt
 python app.py
 ```
 
