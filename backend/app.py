@@ -1,9 +1,14 @@
+import os 
 from pathlib import Path
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
 
 BASE_DIR = Path(__file__).resolve().parent
-FRONTEND_DIR = BASE_DIR.parent / "frontend"
+# This handles path resolution for both local testing and Vercel hosting environments safely
+if os.environ.get("VERCEL"):
+    FRONTEND_DIR = Path(__file__).resolve().parent.parent / "frontend"
+else:
+    FRONTEND_DIR = BASE_DIR.parent / "frontend"
 
 app = Flask(
     __name__,
