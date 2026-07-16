@@ -54,4 +54,4 @@ http://127.0.0.1:5000
 ```
 ## 📸 Screenshot
 
-> ![alt text](image.png)
+> ![alt text](image.generator.png)
