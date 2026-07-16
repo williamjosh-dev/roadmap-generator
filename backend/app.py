@@ -1,6 +1,16 @@
+from pathlib import Path
+
 from flask import Flask, render_template, request
 
-app = Flask(__name__)
+BASE_DIR = Path(__file__).resolve().parent
+FRONTEND_DIR = BASE_DIR.parent / "frontend"
+
+app = Flask(
+    __name__,
+    template_folder=str(FRONTEND_DIR),
+    static_folder=str(FRONTEND_DIR),
+    static_url_path="/static",
+)
 
 # Home Page
 @app.route("/")
