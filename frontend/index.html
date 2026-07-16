@@ -1,90 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Roadmap Generator</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
 <body>
     <div class="container">
-
         <h1>Roadmap Generator</h1>
 
-       <form action="/generate" method="post">
+        <!-- Handled completely by javascript fetch listener now -->
+        <form id="roadmapForm">
+            <div class="form-group">
+                <label>Age</label>
+                <input type="number" name="age" id="ageInput" required>
+            </div>
 
-    <div class="form-group">
-        <label>Age</label>
-        <input type="number" name="age" required>
+            <div class="form-group">
+                <label>Interest</label>
+                <select name="interest" id="interestInput">
+                    <option value="Tech">Tech</option>
+                    <option value="Creative">Creative</option>
+                    <option value="Business">Business</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Level</label>
+                <select name="level" id="levelInput">
+                    <option value="Beginner">Beginner</option>
+                    <option value="Intermediate">Intermediate</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Biggest Problem</label>
+                <select name="problem" id="problemInput">
+                    <option value="Confusion">Confusion</option>
+                    <option value="Discipline">Discipline</option>
+                    <option value="Resources">Resources</option>
+                </select>
+            </div>
+
+            <button type="submit" id="submitBtn">Generate Roadmap</button>
+        </form>
+
+        <!-- Hidden by default until JavaScript populates the data objects -->
+        <div id="resultContainer" style="display: none;">
+            <hr>
+            <div class="roadmap-grid">
+                <div class="roadmap-card">
+                    <h3>Next 30 Days</h3>
+                    <ul id="list30"></ul>
+                </div>
+                <div class="roadmap-card">
+                    <h3>Next 6 Months</h3>
+                    <ul id="list6"></ul>
+                </div>
+                <div class="roadmap-card">
+                    <h3>Next 12 Months</h3>
+                    <ul id="list12"></ul>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="form-group">
-        <label>Interest</label>
-        <select name="interest">
-            <option value="Tech">Tech</option>
-            <option value="Creative">Creative</option>
-            <option value="Business">Business</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label>Level</label>
-        <select name="level">
-            <option value="Beginner">Beginner</option>
-            <option value="Intermediate">Intermediate</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label>Biggest Problem</label>
-        <select name="problem">
-            <option value="Confusion">Confusion</option>
-            <option value="Discipline">Discipline</option>
-            <option value="Resources">Resources</option>
-        </select>
-    </div>
-
-    <button type="submit">Generate Roadmap</button>
-</form>
-
-
-        {% if show_result %}
-        <hr>
-       <div class="roadmap-grid">
-
-    <div class="roadmap-card">
-        <h3>Next 30 Days</h3>
-        <ul>
-            {% for item in roadmap_30 %}
-            <li>{{ item }}</li>
-            {% endfor %}
-        </ul>
-    </div>
-
-    <div class="roadmap-card">
-        <h3>Next 6 Months</h3>
-        <ul>
-            {% for item in roadmap_6 %}
-            <li>{{ item }}</li>
-            {% endfor %}
-        </ul>
-    </div>
-
-    <div class="roadmap-card">
-        <h3>Next 12 Months</h3>
-        <ul>
-            {% for item in roadmap_12 %}
-            <li>{{ item }}</li>
-            {% endfor %}
-        </ul>
-    </div>
-
-</div>
-
-    </div>
-    {% endif %}
-
+    <!-- Ensure your script file loads at the bottom -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
-
 </html>
