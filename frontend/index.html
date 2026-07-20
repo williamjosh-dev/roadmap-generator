@@ -3,31 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roadmap Generator</title>
+    <title>Professional Career & Learning Roadmap Generator</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
-        <h1>Roadmap Generator</h1>
+        <h1>Career Roadmap Generator</h1>
 
-        <!-- Handled completely by javascript fetch listener now -->
         <form id="roadmapForm">
             <div class="form-group">
-                <label>Age</label>
-                <input type="number" name="age" id="ageInput" required>
+                <label for="ageInput">Age / Current Career Stage</label>
+                <input type="number" name="age" id="ageInput" placeholder="e.g. 18" required min="1" max="120">
             </div>
 
             <div class="form-group">
-                <label>Interest</label>
+                <label for="interestInput">Field of Interest</label>
                 <select name="interest" id="interestInput">
-                    <option value="Tech">Tech</option>
-                    <option value="Creative">Creative</option>
-                    <option value="Business">Business</option>
+                    <option value="Tech">Technology & Engineering</option>
+                    <option value="Creative">Creative Arts & Design</option>
+                    <option value="Business">Business & Management</option>
                 </select>
             </div>
 
             <div class="form-group">
-                <label>Level</label>
+                <label for="levelInput">Current Experience Level</label>
                 <select name="level" id="levelInput">
                     <option value="Beginner">Beginner</option>
                     <option value="Intermediate">Intermediate</option>
@@ -35,38 +34,37 @@
             </div>
 
             <div class="form-group">
-                <label>Biggest Problem</label>
+                <label for="problemInput">Primary Learning Obstacle</label>
                 <select name="problem" id="problemInput">
-                    <option value="Confusion">Confusion</option>
-                    <option value="Discipline">Discipline</option>
-                    <option value="Resources">Resources</option>
+                    <option value="Confusion">Lack of Clear Direction (Confusion)</option>
+                    <option value="Discipline">Procrastination & Routine (Discipline)</option>
+                    <option value="Resources">Limited Material/Finances (Resources)</option>
                 </select>
             </div>
 
             <button type="submit" id="submitBtn">Generate Roadmap</button>
         </form>
 
-        <!-- Hidden by default until JavaScript populates the data objects -->
         <div id="resultContainer" style="display: none;">
-            <hr>
+            <h2>Generated Learning Milestones</h2>
             <div class="roadmap-grid">
                 <div class="roadmap-card">
-                    <h3>Next 30 Days</h3>
+                    <h3>30-Day Goals (Foundations)</h3>
                     <ul id="list30"></ul>
                 </div>
                 <div class="roadmap-card">
-                    <h3>Next 6 Months</h3>
+                    <h3>6-Month Goals (Application)</h3>
                     <ul id="list6"></ul>
                 </div>
                 <div class="roadmap-card">
-                    <h3>Next 12 Months</h3>
+                    <h3>12-Month Goals (Mastery)</h3>
                     <ul id="list12"></ul>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Ensure your script file loads at the bottom -->
+    <!-- Fixed the script path syntax by removing the './' -->
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

@@ -10,35 +10,33 @@ document.addEventListener("DOMContentLoaded", () => {
     const list6 = document.getElementById("list6");
     const list12 = document.getElementById("list12");
 
-    // Native age validation logic
+    // Quick runtime guard for boundary checks
     if (ageInput) {
         ageInput.addEventListener("input", () => {
-            const value = Number(ageInput.value);
-            if (Number.isNaN(value)) {
-                ageInput.setCustomValidity("Enter a valid age.");
-            } else if (value < 0 || value > 120) {
-                ageInput.setCustomValidity("Age should be between 0 and 120.");
+            const val = parseInt(ageInput.value, 10);
+            if (isNaN(val) || val < 1 || val > 120) {
+                ageInput.setCustomValidity("Provide a valid range (1-120).");
             } else {
                 ageInput.setCustomValidity("");
             }
         });
     }
 
-    form.addEventListener("submit", (event) => {
-        event.preventDefault(); // Prevents dashboard reload
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
 
-        if (!ageInput || ageInput.value.trim() === "" || !ageInput.checkValidity()) {
-            ageInput?.focus();
+        // Native validation fallback check
+        if (!form.checkValidity()) {
+            form.reportValidity();
             return;
         }
 
-        // Visual loading feedback
+        // Lock form during API flight
         if (submitButton) {
             submitButton.disabled = true;
-            submitButton.textContent = "Generating Roadmap...";
+            submitButton.textContent = "COMPILING TELEMETRY DATA...";
         }
 
-        // Collect inputs into a payload object
         const payload = {
             age: ageInput.value,
             interest: document.getElementById("interestInput").value,
@@ -46,7 +44,6 @@ document.addEventListener("DOMContentLoaded", () => {
             problem: document.getElementById("problemInput").value
         };
 
-        // Call the Flask endpoint locally or on production
         fetch("/generate", {
             method: "POST",
             headers: {
@@ -54,39 +51,47 @@ document.addEventListener("DOMContentLoaded", () => {
             },
             body: JSON.stringify(payload)
         })
-        .then(res => {
-            if (!res.ok) throw new Error("Network response error.");
-            return res.json();
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP Error Status: ${response.status}`);
+            }
+            return response.json();
         })
-        .then(data => {
-            // Helper function to turn strings into list tags safely
-            const buildList = (element, itemsArray) => {
-                element.innerHTML = "";
-                if (itemsArray && itemsArray.length > 0) {
-                    itemsArray.forEach(item => {
-                        const li = document.createElement("li");
-                        li.textContent = item;
-                        element.appendChild(li);
-                    });
+        .then(resData => {
+            // Safe DOM insertion function to prevent layout crashes
+            const parseOutput = (domElement, dataArray) => {
+                domElement.innerHTML = "";
+                const items = dataArray || [];
+                
+                if (items.length === 0) {
+                    const fallbackLi = document.createElement("li");
+                    fallbackLi.textContent = "No sector vectors returned.";
+                    domElement.appendChild(fallbackLi);
+                    return;
                 }
+
+                items.forEach(str => {
+                    const li = document.createElement("li");
+                    li.textContent = str;
+                    domElement.appendChild(li);
+                });
             };
 
-            // Inject the data arrays right into the HTML structure
-            buildList(list30, data.roadmap_30);
-            buildList(list6, data.roadmap_6);
-            buildList(list12, data.roadmap_12);
+            // Parse response payload keys mapping back to Flask dict structures
+            parseOutput(list30, resData.roadmap_30);
+            parseOutput(list6, resData.roadmap_6);
+            parseOutput(list12, resData.roadmap_12);
 
-            // Display the parent container grid smoothly
             resultContainer.style.display = "block";
         })
         .catch(err => {
-            console.error("API error:", err);
-            alert("Failed to reach server. Please check your backend.");
+            console.error("Critical flight path compilation failure:", err);
+            alert("Network packet dropped. Ensure your Flask process is up and running.");
         })
         .finally(() => {
             if (submitButton) {
                 submitButton.disabled = false;
-                submitButton.textContent = "Generate Roadmap";
+                submitButton.textContent = "LAUNCH ROADMAP COMPILATION";
             }
         });
     });
