@@ -1,98 +1,122 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById("roadmapForm");
-    if (!form) return;
+    const ui = {
+        form: document.getElementById("roadmapForm"),
+        ageInput: document.getElementById("ageInput"),
+        triggerBtn: document.getElementById("submitBtn"),
+        viewport: document.getElementById("resultContainer"),
+        nodes: {
+            list30: document.getElementById("list30"),
+            list6: document.getElementById("list6"),
+            list12: document.getElementById("list12")
+        }
+    };
 
-    const ageInput = document.getElementById("ageInput");
-    const submitButton = document.getElementById("submitBtn");
-    const resultContainer = document.getElementById("resultContainer");
-    
-    const list30 = document.getElementById("list30");
-    const list6 = document.getElementById("list6");
-    const list12 = document.getElementById("list12");
+    if (!ui.form) return;
 
-    // Quick runtime guard for boundary checks
-    if (ageInput) {
-        ageInput.addEventListener("input", () => {
-            const val = parseInt(ageInput.value, 10);
-            if (isNaN(val) || val < 1 || val > 120) {
-                ageInput.setCustomValidity("Provide a valid range (1-120).");
-            } else {
-                ageInput.setCustomValidity("");
-            }
+    console.log(
+        "%c READY %c Core system initialization successful.", 
+        "background: #ff9f00; color: #000; font-weight: bold; padding: 2px 4px;", 
+        "color: #00f0ff;"
+    );
+
+
+    if (ui.ageInput) {
+        ui.ageInput.addEventListener("input", () => {
+            const currentAge = parseInt(ui.ageInput.value, 10);
+            const isOutOfRange = isNaN(currentAge) || currentAge < 1 || currentAge > 120;
+            
+            ui.ageInput.setCustomValidity(
+                isOutOfRange ? "Age boundary constraint must lie between 1 and 120." : ""
+            );
         });
     }
 
-    form.addEventListener("submit", (e) => {
-        e.preventDefault();
+    const animateTextNode = (listElement, itemsArray, fallbackText = "No sector tracking data returned.") => {
+        listElement.innerHTML = ""; // Hard reset node layout
+        
+        const payload = itemsArray && itemsArray.length ? itemsArray : [fallbackText];
+        
+        payload.forEach((textString, index) => {
+            const li = document.createElement("li");
+            li.style.opacity = "0";
+            li.style.transform = "translateX(-8px)";
+            li.style.transition = "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)";
+            li.textContent = textString;
+            
+            listElement.appendChild(li);
 
-        // Native validation fallback check
-        if (!form.checkValidity()) {
-            form.reportValidity();
+            
+            setTimeout(() => {
+                li.style.opacity = "1";
+                li.style.transform = "translateX(0)";
+            }, index * 120); 
+        });
+    };
+
+    // Main Operation Lifecycle Event Listener
+    ui.form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+       
+        if (!ui.form.checkValidity()) {
+            ui.form.reportValidity();
             return;
         }
 
-        // Lock form during API flight
-        if (submitButton) {
-            submitButton.disabled = true;
-            submitButton.textContent = "COMPILING TELEMETRY DATA...";
+        
+        if (ui.triggerBtn) {
+            ui.triggerBtn.disabled = true;
+            ui.triggerBtn.textContent = "SYNCHRONIZING SYSTEM LOGS...";
+            ui.triggerBtn.style.cursor = "not-allowed";
         }
 
-        const payload = {
-            age: ageInput.value,
+        const pipelinePayload = {
+            age: ui.ageInput.value.trim(),
             interest: document.getElementById("interestInput").value,
             level: document.getElementById("levelInput").value,
             problem: document.getElementById("problemInput").value
         };
 
-        fetch("/generate", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(payload)
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP Error Status: ${response.status}`);
+        try {
+            const rawResponse = await fetch("/generate", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Requested-With": "XMLHttpRequest" // Signature explicit header flag
+                },
+                body: JSON.stringify(pipelinePayload)
+            });
+
+            if (!rawResponse.ok) {
+                throw new Error(`Pipeline Network Fault: ${rawResponse.status}`);
             }
-            return response.json();
-        })
-        .then(resData => {
-            // Safe DOM insertion function to prevent layout crashes
-            const parseOutput = (domElement, dataArray) => {
-                domElement.innerHTML = "";
-                const items = dataArray || [];
-                
-                if (items.length === 0) {
-                    const fallbackLi = document.createElement("li");
-                    fallbackLi.textContent = "No sector vectors returned.";
-                    domElement.appendChild(fallbackLi);
-                    return;
-                }
 
-                items.forEach(str => {
-                    const li = document.createElement("li");
-                    li.textContent = str;
-                    domElement.appendChild(li);
-                });
-            };
+            const clientData = await rawResponse.json();
 
-            // Parse response payload keys mapping back to Flask dict structures
-            parseOutput(list30, resData.roadmap_30);
-            parseOutput(list6, resData.roadmap_6);
-            parseOutput(list12, resData.roadmap_12);
+            ui.viewport.style.display = "block";
+            ui.viewport.scrollIntoView({ behavior: "smooth", block: "nearest" });
 
-            resultContainer.style.display = "block";
-        })
-        .catch(err => {
-            console.error("Critical flight path compilation failure:", err);
-            alert("Network packet dropped. Ensure your Flask process is up and running.");
-        })
-        .finally(() => {
-            if (submitButton) {
-                submitButton.disabled = false;
-                submitButton.textContent = "LAUNCH ROADMAP COMPILATION";
+            // Sequentially render lists with slight micro-delays for visual premium feel
+            animateTextNode(ui.nodes.list30, clientData.roadmap_30);
+            
+            setTimeout(() => {
+                animateTextNode(ui.nodes.list6, clientData.roadmap_6);
+            }, 250);
+
+            setTimeout(() => {
+                animateTextNode(ui.nodes.list12, clientData.roadmap_12);
+            }, 500);
+
+        } catch (networkError) {
+            console.error("%c CORE FAULT ", "background:#ff0033; color:#fff;", networkError);
+            alert("Application data packet drops detected. Verify your active local Flask server runtime environment config.");
+        } finally {
+            // Restore input operational controls 
+            if (ui.triggerBtn) {
+                ui.triggerBtn.disabled = false;
+                ui.triggerBtn.textContent = "Launch Roadmap Compilation";
+                ui.triggerBtn.style.cursor = "pointer";
             }
-        });
+        }
     });
 });
