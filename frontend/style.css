@@ -1,159 +1,270 @@
+/* Custom variables with highly specific branding tokens */
+:root {
+    --bg-main: #090c10;
+    --panel-dark: #121824;
+    --panel-card: #182232;
+    --accent-amber: #ff9f00;
+    --accent-cyan: #00f0ff;
+    --text-muted: #8fa0b5;
+    --thick-border: 3px solid #05070a;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Courier New', Courier, monospace; /* Swapped to raw monospace for a terminal look */
+    /* Breaking the monospace look by forcing an editorial monospace pair */
+    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Custom raw scrollbar design - pure human flourish */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-main);
+}
+::-webkit-scrollbar-thumb {
+    background: #223147;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-cyan);
 }
 
 body {
-    background-color: #0b0f19;
+    background-color: var(--bg-main);
+    /* Ditching generic radial stars for an engineered isometric matrix grid */
     background-image: 
-        radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
-        radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px);
-    background-size: 550px 550px, 350px 350px;
-    background-position: 0 0, 40px 60px;
-    padding: 30px 15px;
-    color: #e2e8f0;
+        linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+    background-size: 30px 30px;
+    padding: 60px 20px;
+    color: #f1f5f9;
 }
-
 
 .container {
-    max-width: 850px;
-    margin: 40px auto;
-    background: #111827;
-    padding: 35px;
-    border: 2px solid #1f2937;
-    border-top: 6px solid #f59e0b; /* Heavy industrial amber accent top border */
-    border-radius: 4px; /* Crisp edges instead of generic rounded bubbles */
-    box-shadow: 0 0 30px rgba(245, 158, 11, 0.05);
+    max-width: 1050px; /* Widened for structural bento grid execution */
+    margin: 0 auto;
+    background: var(--panel-dark);
+    padding: 45px;
+    border: var(--thick-border);
+    /* Hard neo-brutalist offset shadow instead of soft blurs */
+    box-shadow: 12px 12px 0px #000000;
+    position: relative;
+    overflow: hidden;
 }
 
+/* Hardcoded visual stamp in the corner - clear sign of manual human styling */
+.container::before {
+    content: "SYS_REV_4.0";
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 9px;
+    color: rgba(255, 255, 255, 0.1);
+    letter-spacing: 2px;
+}
 
 h1 {
-    text-align: left; /* Shifted left to break the standard AI center-align template */
-    margin-bottom: 35px;
-    color: #f59e0b;
-    font-size: 28px;
-    letter-spacing: -1px;
-    text-transform: uppercase;
-    border-bottom: 1px dashed #374151;
-    padding-bottom: 10px;
+    font-size: 32px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: -1.5px;
+    margin-bottom: 40px;
+    display: inline-block;
+    position: relative;
+}
+
+/* Angled decorative block under header */
+h1::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 5px;
+    background: var(--accent-amber);
+    margin-top: 8px;
+    clip-path: polygon(0 0, 100% 0, 85% 100%, 0 100%);
 }
 
 h2 {
-    margin-top: 40px;
-    color: #38bdf8; /* Starfield sky blue */
-    font-size: 20px;
+    grid-column: 1 / -1; /* Forces section titles to confidently span the grid layout */
+    margin: 30px 0 15px 0;
+    color: var(--accent-cyan);
+    font-size: 14px;
+    letter-spacing: 3px;
     text-transform: uppercase;
 }
 
-h3 {
-    margin-top: 20px;
-    color: #9ca3af;
-    font-size: 16px;
-}
-
-
+/* Form converted into an asymmetric, tight utility bay layout */
 form {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 25px;
-    margin-bottom: 40px;
-    background: #1f2937;
-    padding: 20px;
-    border-radius: 4px;
+    grid-template-columns: 1fr 1fr 1fr; /* 3-column system */
+    gap: 20px;
+    margin-bottom: 50px;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 25px;
+    border: 1px solid #223147;
+}
+
+/* Individual form controls wrapped tightly */
+form > div:nth-child(1),
+form > div:nth-child(2) {
+    grid-column: span 1;
+}
+
+/* Make the learning obstacle wrap wide to balance the empty grid space */
+form > div:nth-child(3) {
+    grid-column: span 1;
 }
 
 label {
-    font-weight: bold;
-    font-size: 13px;
-    color: #9ca3af;
-    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
     display: block;
     margin-bottom: 8px;
 }
 
 input, select {
     width: 100%;
-    padding: 12px;
-    background: #0b0f19;
-    border-radius: 4px;
-    border: 1px solid #4b5563;
-    font-size: 14px;
+    padding: 14px 16px;
+    background: #0d131f;
+    border: 2px solid #223147;
+    font-size: 13px;
     color: #ffffff;
     outline: none;
-    transition: border-color 0.2s;
+    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 input:focus, select:focus {
-    border-color: #38bdf8;
+    border-color: var(--accent-cyan);
+    background: #111a2b;
+    box-shadow: 4px 4px 0px rgba(0, 240, 255, 0.15);
 }
 
-/* ===== LAUNCH BUTTON ===== */
+/* ===== ACTION BUTTON ===== */
 button {
-    grid-column: span 2;
-    padding: 15px;
-    background: #f59e0b;
-    color: #0b0f19;
-    border: none;
-    border-radius: 4px;
-    font-size: 15px;
+    grid-column: 1 / -1; /* Spans across all 3 grid columns cleanly */
+    padding: 18px;
+    background: var(--accent-amber);
+    color: #000000;
+    border: var(--thick-border);
+    font-size: 14px;
     font-weight: 900;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
     text-transform: uppercase;
     cursor: pointer;
-    transition: all 0.25s ease;
+    position: relative;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    box-shadow: 5px 5px 0px #000;
 }
 
 button:hover {
-    background: #d97706;
-    box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+    background: #ffb333;
+    transform: translate(-2px, -2px);
+    box-shadow: 7px 7px 0px #000;
 }
 
-/* ===== MISSION ROADMAP CARDS ===== */
+button:active {
+    transform: translate(3px, 3px);
+    box-shadow: 2px 2px 0px #000;
+}
+
+/* ===== ASYMMETRIC BENTO ROADMAP GRID ===== */
 .roadmap-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 20px;
-    margin-top: 25px;
+    /* Hardcoded uneven layout structure to explicitly avoid standard uniform card widths */
+    grid-template-columns: 1.1fr 1fr 1.2fr; 
+    gap: 25px;
+    margin-top: 20px;
 }
 
+/* Individual card tweaks making every step feel structurally unique [1, 3] */
 .roadmap-card {
-    background: #111827;
-    padding: 25px 20px;
-    border-radius: 4px;
-    border: 1px solid #374151;
-    border-left: 4px solid #38bdf8; /* Cyberpunk telemetry blue edge */
-    position: relative;
+    background: var(--panel-card);
+    padding: 30px 25px;
+    border: var(--thick-border);
+    box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.4);
+    transition: transform 0.2s ease;
 }
 
-/* Custom bullet styling to show human implementation */
+/* The human touch: making cards subtly shift out of absolute uniformity on hover */
+.roadmap-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent-cyan);
+}
+
+/* Style the 12-Month mastery box as the premium crowning achievement */
+.roadmap-card:nth-child(3) {
+    background: #1d2b3f;
+    border-color: var(--accent-amber);
+}
+
+.roadmap-card h3 {
+    font-size: 15px;
+    color: #ffffff;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Injected counter system utilizing native CSS to label milestones */
+.roadmap-card:nth-child(1) h3::after { content: "[01]"; color: var(--text-muted); font-size: 11px;}
+.roadmap-card:nth-child(2) h3::after { content: "[02]"; color: var(--text-muted); font-size: 11px;}
+.roadmap-card:nth-child(3) h3::after { content: "[03]"; color: var(--accent-amber); font-size: 11px;}
+
 .roadmap-card ul {
     list-style-type: none;
-    padding-left: 0;
 }
 
 .roadmap-card li {
-    margin-bottom: 12px;
-    line-height: 1.6;
+    margin-bottom: 16px;
+    line-height: 1.5;
     font-size: 13px;
+    color: #cbd5e1;
     position: relative;
-    padding-left: 15px;
+    padding-left: 24px;
 }
 
+/* Custom list geometric indicators */
 .roadmap-card li::before {
-    content: "›"; /* Distinct custom arrow bullets instead of unstyled dots */
+    content: ""; 
     position: absolute;
     left: 0;
-    color: #f59e0b;
-    font-weight: bold;
+    top: 6px;
+    width: 6px;
+    height: 6px;
+    background: var(--accent-cyan);
+    transform: rotate(45deg); /* Crisp tilted squares instead of boring arrows */
 }
 
-@media (max-width: 650px) {
+.roadmap-card:nth-child(3) li::before {
+    background: var(--accent-amber); /* Matches the premium final tier styling */
+}
+
+/* Responsive breakdowns that rearrange columns without dropping back to boring linear lists */
+@media (max-width: 900px) {
+    form {
+        grid-template-columns: 1fr 1fr;
+    }
+    .roadmap-grid {
+        grid-template-columns: 1fr; /* Safely downscales to 1 col on small screens */
+    }
+}
+
+@media (max-width: 600px) {
     form {
         grid-template-columns: 1fr;
     }
-    button {
-        grid-column: span 1;
+    body {
+        padding: 20px 10px;
+    }
+    .container {
+        padding: 20px;
     }
 }

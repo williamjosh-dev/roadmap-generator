@@ -4,15 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Professional Career & Learning Roadmap Generator</title>
+    <!-- Keeps your working Flask static asset injection -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
-        <h1>Career Roadmap Generator</h1>
+        <header class="dashboard-header">
+            <h1>Career Roadmap Generator</h1>
+        </header>
 
+        <!-- Wrapped input controls inside clean layout blocks for our 3-column system -->
         <form id="roadmapForm">
             <div class="form-group">
-                <label for="ageInput">Age / Current Career Stage</label>
+                <label for="ageInput">Age / Stage</label>
                 <input type="number" name="age" id="ageInput" placeholder="e.g. 18" required min="1" max="120">
             </div>
 
@@ -26,14 +30,15 @@
             </div>
 
             <div class="form-group">
-                <label for="levelInput">Current Experience Level</label>
+                <label for="levelInput">Experience Level</label>
                 <select name="level" id="levelInput">
                     <option value="Beginner">Beginner</option>
                     <option value="Intermediate">Intermediate</option>
                 </select>
             </div>
 
-            <div class="form-group">
+            <!-- This 4th item expands across to keep the form grid visually dynamic -->
+            <div class="form-group obstacle-bay">
                 <label for="problemInput">Primary Learning Obstacle</label>
                 <select name="problem" id="problemInput">
                     <option value="Confusion">Lack of Clear Direction (Confusion)</option>
@@ -42,29 +47,35 @@
                 </select>
             </div>
 
-            <button type="submit" id="submitBtn">Generate Roadmap</button>
+            <button type="submit" id="submitBtn">Launch Roadmap Compilation</button>
         </form>
 
-        <div id="resultContainer" style="display: none;">
+        <!-- Hidden container that reveals the human-centric asymmetrical Bento blocks -->
+        <main id="resultContainer" style="display: none;">
             <h2>Generated Learning Milestones</h2>
+            
             <div class="roadmap-grid">
-                <div class="roadmap-card">
-                    <h3>30-Day Goals (Foundations)</h3>
+                <!-- Card 1: Core Tier -->
+                <section class="roadmap-card" data-tier="foundations">
+                    <h3>30-Day Goals <span>(Phase 01)</span></h3>
                     <ul id="list30"></ul>
-                </div>
-                <div class="roadmap-card">
-                    <h3>6-Month Goals (Application)</h3>
+                </section>
+                
+                <!-- Card 2: Application Tier -->
+                <section class="roadmap-card" data-tier="application">
+                    <h3>6-Month Goals <span>(Phase 02)</span></h3>
                     <ul id="list6"></ul>
-                </div>
-                <div class="roadmap-card">
-                    <h3>12-Month Goals (Mastery)</h3>
+                </section>
+                
+                <!-- Card 3: Premium Tier (Slightly larger, colored differently in CSS) -->
+                <section class="roadmap-card" data-tier="mastery">
+                    <h3>12-Month Goals <span>(Phase 03)</span></h3>
                     <ul id="list12"></ul>
-                </div>
+                </section>
             </div>
-        </div>
+        </main>
     </div>
 
-    <!-- Fixed the script path syntax by removing the './' -->
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
