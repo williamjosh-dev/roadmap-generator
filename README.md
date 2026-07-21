@@ -8,11 +8,11 @@ mainly build for the **"Give Your Website a Pulse"** Stardance mission.
 
 ## HERE HOW it WORKS
 
-* **Custom UI/CSS Layout:** Features a fully tailored dashboard grid built from raw CSS classes, completely bypassing cookie-cutter templates.
-* **Real Interactive Feature:** Features an internal logic-mapping module that customizes learning tracks instantly using age profiling, structural constraints, and personalized learning variables.
-* **Seamless API Architecture:** Intercepts traditional forms via modern JavaScript fetch architecture, allowing zero-reload dynamic updates right inside the dashboard view.
-* **No AI Website Builders:** Built 100% from scratch with pure HTML, semantic CSS, clean JavaScript, and modular Python Flask.
-
+1. The front-end captures user inputs (age, track, and difficulty) using native HTML forms.
+2. An event listener intercepts the submission to prevent a page refresh, bundling the data into a JSON payload.
+3.The data is sent via fetch() to a Python Flask backend.
+4. The backend processes the variables through conditional mapping blocks to output a structured JSON schedule.
+5. JavaScript parses the response and dynamically updates the DOM grid container.
 ---
 
 ## USED STACK while building this
