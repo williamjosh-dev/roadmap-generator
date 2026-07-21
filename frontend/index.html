@@ -7,6 +7,40 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+            
+<nav class="top-utility-bar">
+    <div class="nav-brand">
+        <span class="status-indicator"></span>
+        <span class="brand-text">CORE_ENGINE // ROADMAP_v4.2</span>
+    </div>
+    
+    <div class="nav-message">
+        <!-- Changed from an <a> tag link to a clickable <button> trigger -->
+        <button type="button" id="openModalBtn" class="note-link">
+            🗎 Read System Documentation Note
+        </button>
+    </div>
+    
+    <div class="nav-meta">
+        <span class="timestamp" id="systemClock">SYS_OK</span>
+    </div>
+</nav>
+
+<!-- The New Overlay Modal Container (Hidden by default in CSS) -->
+<div id="notesModal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>SYSTEM INFORMATION & USER INSTRUCTIONS</h3>
+            <button type="button" id="closeModalBtn" class="modal-close-x">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p>1. Select your target baseline constraints (Age, Field, Experience, Obstacle).</p>
+            <p>2. The compilation algorithm maps vectors asynchronously to map milestones.</p>
+            <p>3. Outputs are divided into three tier phases for structural application.</p>
+        </div>
+    </div>
+</div>
+
     <div class="container">
         <header class="dashboard-header">
             <h1>Career Roadmap Generator</h1>
@@ -48,6 +82,16 @@
 
             <button type="submit" id="submitBtn">Launch Roadmap Compilation</button>
         </form>
+      
+<section class="history-terminal" id="historySection" style="display: none;">
+    <div class="history-header">
+        <h4>[ LOGGED_ARCHIVES ]</h4>
+        <button type="button" id="clearHistoryBtn" class="clear-btn">× WIPE_ALL</button>
+    </div>
+    <div class="history-log-list" id="historyLogList">
+       
+    </div>
+</section>
 
 
         <main id="resultContainer" style="display: none;">

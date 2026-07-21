@@ -1,4 +1,26 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // === 1. MODAL OVERLAY LOGIC ENGINE ===
+    const modal = document.getElementById("notesModal");
+    const openBtn = document.getElementById("openModalBtn");
+    const closeBtn = document.getElementById("closeModalBtn");
+
+    if (modal && openBtn && closeBtn) {
+        openBtn.addEventListener("click", () => {
+            modal.style.display = "flex";
+        });
+
+        closeBtn.addEventListener("click", () => {
+            modal.style.display = "none";
+        });
+
+        window.addEventListener("click", (event) => {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        });
+    }
+
+    // === 2. DYNAMIC CONTROLS & ELEMENT MAPPING ===
     const ui = {
         form: document.getElementById("roadmapForm"),
         ageInput: document.getElementById("ageInput"),
@@ -19,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "color: #00f0ff;"
     );
 
-
+    // Operational boundary range system safety check
     if (ui.ageInput) {
         ui.ageInput.addEventListener("input", () => {
             const currentAge = parseInt(ui.ageInput.value, 10);
@@ -31,8 +53,9 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // Staggered text presentation renderer
     const animateTextNode = (listElement, itemsArray, fallbackText = "No sector tracking data returned.") => {
-        listElement.innerHTML = ""; // Hard reset node layout
+        listElement.innerHTML = ""; 
         
         const payload = itemsArray && itemsArray.length ? itemsArray : [fallbackText];
         
@@ -45,7 +68,6 @@ document.addEventListener("DOMContentLoaded", () => {
             
             listElement.appendChild(li);
 
-            
             setTimeout(() => {
                 li.style.opacity = "1";
                 li.style.transform = "translateX(0)";
@@ -53,16 +75,85 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     };
 
-    // Main Operation Lifecycle Event Listener
+    // === 3. LOCAL STORAGE USER HISTORY LOGIC ENGINE ===
+    const HISTORY_KEY = "roadmap_user_history";
+
+    // Reads memory registry snap arrays and draws button filter token options
+    const renderHistoryLog = () => {
+        const historyListContainer = document.getElementById("historyLogList");
+        const historySection = document.getElementById("historySection");
+        if (!historyListContainer || !historySection) return;
+
+        const savedData = JSON.parse(localStorage.getItem(HISTORY_KEY)) || [];
+
+        if (savedData.length === 0) {
+            historySection.style.display = "none";
+            return;
+        }
+
+        historySection.style.display = "block";
+        historyListContainer.innerHTML = ""; 
+
+        savedData.forEach((item, index) => {
+            const token = document.createElement("button");
+            token.type = "button";
+            token.className = "history-token";
+            token.textContent = `[#0${index + 1}] Stage:${item.meta.age} // ${item.meta.interest}`;
+            
+            // Populates dashboard view from the cached local archive item map data snapshot on click
+            token.addEventListener("click", () => {
+                ui.viewport.style.display = "block";
+                ui.viewport.scrollIntoView({ behavior: "smooth", block: "nearest" });
+                
+                animateTextNode(ui.nodes.list30, item.payload.roadmap_30);
+                setTimeout(() => animateTextNode(ui.nodes.list6, item.payload.roadmap_6), 150);
+                setTimeout(() => animateTextNode(ui.nodes.list12, item.payload.roadmap_12), 300);
+            });
+
+            historyListContainer.appendChild(token);
+        });
+    };
+
+    // Appends telemetry logs directly into browser device registry space
+    const saveToHistory = (metaInput, payloadOutput) => {
+        const currentLogs = JSON.parse(localStorage.getItem(HISTORY_KEY)) || [];
+        
+        const newLogEntry = {
+            meta: metaInput,
+            payload: payloadOutput,
+            timestamp: new Date().toISOString()
+        };
+
+        currentLogs.unshift(newLogEntry);
+        
+        // Limits total stored items visibility tracking log block array items to 5 items maximum
+        if (currentLogs.length > 5) currentLogs.pop();
+
+        localStorage.setItem(HISTORY_KEY, JSON.stringify(currentLogs));
+        renderHistoryLog();
+    };
+
+    // Setup clear storage handler wipe click event mapping
+    const clearBtn = document.getElementById("clearHistoryBtn");
+    if (clearBtn) {
+        clearBtn.addEventListener("click", () => {
+            localStorage.removeItem(HISTORY_KEY);
+            renderHistoryLog();
+        });
+    }
+
+    // Trigger history loading checking run cycle tracking evaluation loops on startup
+    renderHistoryLog();
+
+
+    // === 4. ASYMMETRIC FORM LIFECYCLE CONTROLLER ENGINE ===
     ui.form.addEventListener("submit", async (event) => {
         event.preventDefault();
 
-       
         if (!ui.form.checkValidity()) {
             ui.form.reportValidity();
             return;
         }
-
         
         if (ui.triggerBtn) {
             ui.triggerBtn.disabled = true;
@@ -82,7 +173,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "X-Requested-With": "XMLHttpRequest" // Signature explicit header flag
+                    "X-Requested-With": "XMLHttpRequest"
                 },
                 body: JSON.stringify(pipelinePayload)
             });
@@ -93,10 +184,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const clientData = await rawResponse.json();
 
+            // Commit query snapshots directly into your browser device storage cache instantly
+            saveToHistory(pipelinePayload, clientData);
+
             ui.viewport.style.display = "block";
             ui.viewport.scrollIntoView({ behavior: "smooth", block: "nearest" });
 
-            // Sequentially render lists with slight micro-delays for visual premium feel
             animateTextNode(ui.nodes.list30, clientData.roadmap_30);
             
             setTimeout(() => {
@@ -111,7 +204,6 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error("%c CORE FAULT ", "background:#ff0033; color:#fff;", networkError);
             alert("Application data packet drops detected. Verify your active local Flask server runtime environment config.");
         } finally {
-            // Restore input operational controls 
             if (ui.triggerBtn) {
                 ui.triggerBtn.disabled = false;
                 ui.triggerBtn.textContent = "Launch Roadmap Compilation";
