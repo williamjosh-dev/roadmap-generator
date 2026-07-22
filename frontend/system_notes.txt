@@ -1,5 +1,0 @@
-SYSTEM INFORMATION & USER INSTRUCTIONS
-======================================
-1. Select your target baseline constraints (Age, Field, Experience, Obstacle).
-2. The compilation algorithm maps vectors asynchronously to map milestones.
-3. Outputs are divided into three tier phases for structural application.
